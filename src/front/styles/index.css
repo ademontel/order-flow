@@ -1,0 +1,8 @@
+/* 
+    General Styles used on every website (Don't Repeat Yourself)
+*/
+body, .raleway {
+    font-family: "Raleway", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
