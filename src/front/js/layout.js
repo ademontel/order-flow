@@ -7,8 +7,9 @@ import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
-
+import  Footer  from "./component/footer";
+import { Client } from "./component/new_client";
+import { PackSlip } from "./component/new_pack_slip";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -21,12 +22,16 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<h1>Not found!</h1>} />
-                    </Routes>
-                    <Footer />
+                    <div className="row">
+                        <Navbar />
+                        <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Client />} path="/nuevo_cliente" />
+                            <Route element={<PackSlip />} path="/nuevo_remito" />
+                            <Route element={<h1>Not found!</h1>} />
+                        </Routes>
+                        <Footer />
+                    </div>
                 </ScrollToTop>
             </BrowserRouter>
         </div>
