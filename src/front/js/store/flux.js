@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             createClientsBulk: async (clientsArray) => {
                 setStore({ error: null });
                 try {
-                    const response = await fetch('/api/clients/bulk', {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/clients/bulk`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             getClients: async () => { 
               try {
-                const response = await fetch('/api/clients'); 
+                const response = await fetch(process.env.BACKEND_URL + "api/clients"); 
                 if (!response.ok) {
                     throw new Error("Error fetching clients");
                 }

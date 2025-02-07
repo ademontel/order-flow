@@ -65,7 +65,7 @@ export const Client = () => {
       }
     };
 
-    reader.readAsText(file);
+    reader.readAsText(file, 'UTF-8');
   };
 
   return (
