@@ -10,6 +10,7 @@ import { Navbar } from "./component/navbar";
 import  Footer  from "./component/footer";
 import { Client } from "./component/new_client";
 import { PackSlip } from "./component/new_pack_slip";
+import { NuevoProducto } from "./component/new_product";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -28,6 +29,7 @@ const Layout = () => {
                             <Route element={<Home />} path="/" />
                             <Route element={<Client />} path="/nuevo_cliente" />
                             <Route element={<PackSlip />} path="/nuevo_remito" />
+                            <Route element={<NuevoProducto />} path="/nuevo_producto" />
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>
                         <Footer />
