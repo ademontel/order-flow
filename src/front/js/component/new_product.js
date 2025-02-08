@@ -85,7 +85,7 @@ export const NuevoProducto = () => {
   };
 
   return (
-    <div className="col-6 mx-auto m-2">
+    <div className="col m-3">
       <h1>Nuevo Producto</h1>
       <form onSubmit={handleSubmit}>
         {/* ... (campos del formulario: sku, coleccion, genero, talle) */}

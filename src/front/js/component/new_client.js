@@ -69,7 +69,7 @@ export const Client = () => {
   };
 
   return (
-    <div className="col-6 mx-auto m-2">
+    <div className="col p-0 m-3">
       <h1>Nuevo Cliente</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -132,7 +132,7 @@ export const Client = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Crear Cliente</button>
+        <button type="submit" className="btn btn-success mt-3 mx-auto d-block">Crear Cliente</button>
       </form>
 
       <h2>Carga Masiva de Clientes</h2>
@@ -147,13 +147,15 @@ export const Client = () => {
             onChange={handleBulkChange}
             rows="10"
             required
+            placeholder='Ejemplo: [{ "nombre": "Juan Perez", "direccion": "Calle Falsa 123", "telefono": "123456789", "email": "juan@example.com", "rut": "12345678-9" }, { ... }]'
           />
         </div>
-        <button type="submit" className="btn btn-primary">Cargar Clientes</button>
+        <button type="submit" className="btn btn-success mt-3 mx-auto d-block">Cargar Clientes</button>
       </form>
-
-      <h2>Subir Archivo de Clientes</h2>
-      <input type="file" onChange={handleFileUpload} />
+      <div className="container">
+        <h2>Subir Archivo de Clientes</h2>
+        <input type="file" onChange={handleFileUpload} />
+      </div>
     </div>
   );
 };

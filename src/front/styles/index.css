@@ -1,34 +1,27 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
 body, .raleway {
-    font-family: "Raleway", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-  }
+  font-family: "Raleway", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
 
 @media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
+  .sidebar {
+      display: none;
+  }
 }
 
 .clean-toggler {
-    background-color: rgba(0, 0, 0, 0.1); /* Fondo sutilmente transparente */
-    border: none;
-    padding: 8px;
-    border-radius: 6px; /* Bordes suavizados */
-    transition: background 0.3s ease-in-out, transform 0.2s ease;
-  }
-  
-  
-  .clean-toggler:hover {
-    transform: scale(1.1); /* Pequeño efecto de zoom */
-    color: black;
-    font-size: 1.1em;
-
-  }
+  background-color: rgba(0, 0, 0, 0.1); 
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease;
+}
 
 .sidebar-col-3 {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.offcanvas {
+max-width: 70% !important;
 }
