@@ -1,27 +1,95 @@
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body, .raleway {
   font-family: "Raleway", serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-      display: none;
+.footer {
+  background-color: rgba(0,0,0,0.1);
+  height: 3vh;
+}
+
+@media
+(min-width: 1919px) {
+  .navbar-nav {
+    text-align:  start !important;
+  }
+  .sidebar{
+    width: 15% !important;
+  }
+  .navbar-nav li a span {
+    font-size: 1em;
   }
 }
 
-.clean-toggler {
-  background-color: rgba(0, 0, 0, 0.1); 
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  transition: background 0.3s ease-in-out, transform 0.2s ease;
+@media
+(min-width: 1367px) {
+  .navbar-nav {
+    text-align:  start !important;
+  }
+  .sidebar{
+    width: 15% !important;
+  }
+  .navbar-nav li a span {
+    font-size: 1em;
+  }
 }
 
-.sidebar-col-3 {
-  background-color: rgba(0, 0, 0, 0.1);
+@media
+(max-width: 1367px) {
+  .navbar-nav {
+    text-align:  start !important;
+  }
+  .navbar-nav li a span {
+    font-size: 1em;
+  }
 }
 
-.offcanvas {
-max-width: 70% !important;
+@media
+(max-width: 1024px) {
+  .navbar-nav {
+    text-align:  start !important;
+  }
+  .navbar-nav li a span {
+    font-size: 0.9em;
+  }
+}
+
+@media
+(max-width: 768px) {
+  .navbar-nav {
+    text-align:  start !important;
+  }
+  .navbar-nav li a span {
+    font-size: 0.7em;
+  }
+}
+
+@media
+(max-width: 576px) {
+  .navbar-nav li a span {
+    display: none;
+  }
+  .welcome {
+    display: none;
+  }
+  .sidebar{
+    width: 10% !important;
+  }
+  .navbar-nav {
+    text-align:  center !important;
+  }
+  .navbar-bottom {
+    justify-content: center !important;
+  }
+}
+
+.sidebar {
+  width: 20%;
+  background-color: rgba(0,0,0,0.1);
 }

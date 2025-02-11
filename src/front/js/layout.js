@@ -23,8 +23,7 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <div className="container">
-                        <div className="row m-2">
+                    <div className="d-flex">                        
                             <Navbar />
                             <Routes>
                                 <Route element={<Home />} path="/" />
@@ -32,10 +31,9 @@ const Layout = () => {
                                 <Route element={<PackSlip />} path="/nuevo_remito" />
                                 <Route element={<NuevoProducto />} path="/nuevo_producto" />
                                 <Route element={<h1>Not found!</h1>} />
-                            </Routes>
-                            <Footer />
-                        </div>
+                            </Routes>                                                   
                     </div>
+                            <Footer />
                 </ScrollToTop>
             </BrowserRouter>
         </div>

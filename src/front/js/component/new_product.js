@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaTimes } from 'react-icons/fa';
+import { PiBroadcastDuotone } from "react-icons/pi";
 
 export const NuevoProducto = () => {
   const [producto, setProducto] = useState({
@@ -9,6 +10,9 @@ export const NuevoProducto = () => {
     talle: "",
     colores: [],
     nuevoColor: "",
+    talles: [],
+    nuevoTalle: "",
+
   });
 
   const [bulkProducts, setBulkProducts] = useState("");
@@ -43,6 +47,30 @@ export const NuevoProducto = () => {
       colores: producto.colores.filter((c) => c !== color),
     });
   };
+
+  const handleSizeChange = (event) => {
+    setProducto({
+      ...producto,
+      nuevoTalle: event.target.value,
+    });
+  };
+
+  const handleAddSize = () => {
+    if (producto.nuevoTalle.trim() != "") {
+      setProducto({
+        ...producto,
+        talles: [...producto.talles, producto.nuevoTalle.trim()],
+        nuevoTalle: "",
+      });
+    }
+  };
+
+  const handleDeleteSize = (size) => {
+    setProducto({
+      ...producto,
+      talles: producto.talles.filter((c) => c !== size),
+    });
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -85,7 +113,7 @@ export const NuevoProducto = () => {
   };
 
   return (
-    <div className="col m-3">
+    <div className="w-75 p-0 m-3">
       <h1>Nuevo Producto</h1>
       <form onSubmit={handleSubmit}>
         {/* ... (campos del formulario: sku, coleccion, genero, talle) */}
@@ -131,19 +159,40 @@ export const NuevoProducto = () => {
           </select>
         </div>
 
+        {/* Manejo de talles */}
         <div className="form-group">
-          <label htmlFor="talle">Talle</label>
-          <input
-            type="text"
-            className="form-control"
-            id="talle"
-            name="talle"
-            value={producto.talle}
-            onChange={handleChange}
-            required
-          />
+          <label>Talles</label>
+          <div>
+            {producto.talles.map((talle) => (
+              <div key={talle} className="badge bg-secondary me-2">
+                {talle}
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger ms-1"
+                  onClick={() => handleDeleteSize(talle)}
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="input-group mt-2">
+            <input
+              type="text"
+              className="form-control"
+              value={producto.nuevoTalle}
+              onChange={handleSizeChange}
+              placeholder="Añadir talle"
+            />
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={handleAddSize}
+            >
+              Añadir
+            </button>
+          </div>
         </div>
-
 
         {/* Manejo de colores */}
         <div className="form-group">
@@ -185,7 +234,7 @@ export const NuevoProducto = () => {
         </button>
       </form>
 
-      <h2 className="mt-4">Carga Masiva de Productos (JSON)</h2>
+      <h2>Carga Masiva de Productos (JSON)</h2>
 
       <div className="form-group">
         <label htmlFor="bulkProducts">JSON de Productos (Array)</label>
@@ -210,7 +259,7 @@ export const NuevoProducto = () => {
         <label htmlFor="fileUpload">Subir Archivo JSON</label><br/>
         <input
           type="file"
-          className="form-control-file"
+          className="form-control-file w-100"
           id="fileUpload"
           onChange={handleFileUpload}
           accept=".json"

@@ -2,8 +2,8 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer mt-auto py-3 bg-light">
-      <div className="container text-center">
+    <footer className="footer mt-auto align-items-center">
+      <div className="text-center">
         <span className="text-muted">
           Desarrollado por{' '}
           <a href="https://github.com/ademontel" target="_blank" rel="noopener noreferrer">
