@@ -16,15 +16,29 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
+@api.route('/products', methods=['GET'])
+def get_products():
+    search_term = request.args.get('search')
+    try:
+        if search_term:
+            products = Product.query.filter(Product.nombre.ilike(f'%{search_term}%')).all()
+        else:
+            products = Product.query.all()
+        serialized_products = [p.serialize() for p in products]
+        return jsonify(serialized_products), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @api.route('/products', methods=['POST'])
 def create_product():
     data = request.get_json()
     try:
         new_product = Product(
             sku=data['sku'],
+            nombre=data['nombre'],
             coleccion=data['coleccion'],
             genero=data['genero'],
-            talle=data['talle'],
+            talles=data['talles'],
             colores=data['colores'],
             precio=data['precio']
         )
@@ -35,6 +49,41 @@ def create_product():
         db.session.rollback()
         return jsonify({"error": str(e)}), 400
 
+@api.route('/products/bulk', methods=['POST'])
+def create_products_bulk():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Error al leer JSON"}), 400
+    try:
+        products = []
+        for product_data in data:
+            new_product = Product(
+                sku=product_data['sku'],
+                nombre=product_data['nombre'],
+                coleccion=product_data['coleccion'],
+                genero=product_data['genero'],
+                talles=product_data['talles'],
+                colores=product_data['colores'],
+                precio=product_data['precio']
+            )
+            db.session.add(new_product)
+            products.append(new_product)
+        db.session.commit()
+        return jsonify([product.serialize() for product in products]), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+@api.route('/products/<int:product_id>', methods=['GET'])
+def get_product(product_id):
+    try:
+        product = Product.query.get(product_id)
+        if not product:
+            return jsonify({"error": "Product not found"}), 404
+        return jsonify(product.serialize()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+            
 @api.route('/users', methods=['POST'])
 def register_user():
     data = request.get_json()
@@ -100,8 +149,12 @@ def create_clients_bulk():
     
 @api.route('/clients', methods=['GET']) # Nueva ruta para obtener clientes
 def get_clients():
+    search_term = request.args.get('search')
     try:
-        clients = Client.query.all()
+        if search_term:
+            clients = Client.query.filter(Client.name.ilike(f'%{search_term}%')).all()
+        else:
+            clients = Client.query.all()
         serialized_clients = [c.serialize() for c in clients]
         return jsonify(serialized_clients), 200
     except Exception as e:
@@ -121,6 +174,19 @@ def get_client_debt(client_id):
         return jsonify({"error": "Client not found"}), 404
 
     return jsonify({"debt": debt}), 200
+
+@api.route('/clients/<int:client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    try:
+        client =  Client.query.get(client_id)
+        if not client:
+            return jsonify({"msg": "Cliente no existe"}), 404
+        db.session.delete(client)
+        db.session.commit()
+        return jsonify({"msg":"Cliente eliminado exitosamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": str(e)}), 500
 
 @api.route('/remitos', methods=['POST'])
 def create_remito():
@@ -206,4 +272,3 @@ def get_remito_items(remito_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    

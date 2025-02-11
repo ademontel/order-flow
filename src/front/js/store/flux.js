@@ -2,8 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
             message: null,
-            clients: [], 
-            error: null, 
+            clients: [],
+            products: [],
+            error: null,
         },
         actions: {
             getMessage: async () => {
@@ -18,7 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             createClient: async (clientData) => {
-                setStore({ error: null }); 
+                setStore({ error: null });
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}api/clients`, {
                         method: 'POST',
@@ -34,12 +35,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
 
                     const newClient = await response.json();
-                    setStore({ clients: [...getStore().clients, newClient] }); 
+                    setStore({ clients: [...getStore().clients, newClient] });
                     return newClient;
                 } catch (error) {
                     console.error("Error creating client:", error);
                     setStore({ error: error.message });
-                    throw error; 
+                    throw error;
                 }
             },
 
@@ -69,22 +70,134 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            getClients: async () => { 
-              try {
-                const response = await fetch(process.env.BACKEND_URL + "api/clients"); 
-                if (!response.ok) {
-                    throw new Error("Error fetching clients");
+            getClients: async () => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + "api/clients");
+                    if (!response.ok) {
+                        throw new Error("Error fetching clients");
+                    }
+                    const clients = await response.json();
+                    setStore({ clients: clients });
+                } catch (error) {
+                    console.error("Error fetching clients:", error);
+                    setStore({ error: error.message });
                 }
-                const clients = await response.json();
-                setStore({ clients: clients }); 
-              } catch (error) {
-                console.error("Error fetching clients:", error);
-                setStore({ error: error.message }); 
-              }
+            },
+
+            searchClients: async (searchTerm) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/clients?search=${searchTerm}`);
+                    if (!response.ok) {
+                        throw new Error("Error searching clients");
+                    }
+                    const clients = await response.json();
+                    setStore({ clients: clients });
+                } catch (error) {
+                    console.error("Error searching clients:", error);
+                    setStore({ error: error.message });
+                }
             },
 
             clearError: () => {
                 setStore({ error: null });
+            },
+
+            deleteClient: async (clientId) => {
+                setStore({ error: null });
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/clients/${clientId}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al eliminar cliente');
+                    }
+
+                    setStore({
+                        clients: getStore().clients.filter(client => client.id !== clientId),
+                    });
+                } catch (error) {
+                    console.error("Error deleting client:", error);
+                    setStore({ error: error.message });
+                    throw error;
+                }
+            },
+            getProducts: async () => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + "api/products");
+                    if (!response.ok) {
+                        throw new Error("Error fetching products");
+                    }
+                    const products = await response.json();
+                    setStore({ products: products });
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                    setStore({ error: error.message });
+                }
+            },
+            searchProducts: async (searchTerm) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/products?search=${searchTerm}`);
+                    if (!response.ok) {
+                        throw new Error("Error searching products");
+                    }
+                    const products = await response.json();
+                    setStore({ products: products });
+                } catch (error) {
+                    console.error("Error searching products:", error);
+                    setStore({ error: error.message });
+                }
+            },
+            createProduct: async (productData) => {
+                setStore({ error: null });
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/products`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productData),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al crear producto');
+                    }
+
+                    const newProduct = await response.json();
+                    setStore({ products: [...getStore().products, newProduct] });
+                    return newProduct;
+                } catch (error) {
+                    console.error("Error creating product:", error);
+                    setStore({ error: error.message });
+                    throw error;
+                }
+            },
+            createProductsBulk: async (productsArray) => {
+                setStore({ error: null });
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/products/bulk`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productsArray),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error en la carga masiva de productos');
+                    }
+
+                    const createdProducts = await response.json();
+                    setStore({ products: [...getStore().products, ...createdProducts] });
+                    return createdProducts;
+                } catch (error) {
+                    console.error("Error in bulk upload of products:", error);
+                    setStore({ error: error.message });
+                    throw error;
+                }
             },
         },
     };

@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaTimes } from 'react-icons/fa';
-import { PiBroadcastDuotone } from "react-icons/pi";
+import { Context } from "../store/appContext";
 
 export const NuevoProducto = () => {
+  const { actions } = useContext(Context);
   const [producto, setProducto] = useState({
     sku: "",
+    nombre: "",
     coleccion: "",
     genero: "",
-    talle: "",
     colores: [],
     nuevoColor: "",
     talles: [],
     nuevoTalle: "",
+    precio:"",
 
   });
 
   const [bulkProducts, setBulkProducts] = useState("");
 
   const handleChange = (event) => {
+    const { name, value } = event.target;
+    const newValue = name === "precio" ? value.replace(",", ".") : value;
     setProducto({
       ...producto,
-      [event.target.name]: event.target.value,
+      [name]: newValue,
     });
   };
 
@@ -33,9 +37,10 @@ export const NuevoProducto = () => {
 
   const handleAddColor = () => {
     if (producto.nuevoColor.trim() !== "") {
+      const nuevosColores = producto.nuevoColor.split(",").map(color => color.trim()).filter(color => color !== "");
       setProducto({
         ...producto,
-        colores: [...producto.colores, producto.nuevoColor.trim()],
+        colores: [...producto.colores, ...nuevosColores],
         nuevoColor: "",
       });
     }
@@ -54,12 +59,12 @@ export const NuevoProducto = () => {
       nuevoTalle: event.target.value,
     });
   };
-
   const handleAddSize = () => {
-    if (producto.nuevoTalle.trim() != "") {
+    if (producto.nuevoTalle.trim() !== "") {
+      const nuevosTalles = producto.nuevoTalle.split(",").map(talle => talle.trim()).filter(talle => talle !== "");
       setProducto({
         ...producto,
-        talles: [...producto.talles, producto.nuevoTalle.trim()],
+        talles: [...producto.talles, ...nuevosTalles],
         nuevoTalle: "",
       });
     }
@@ -72,10 +77,16 @@ export const NuevoProducto = () => {
     });
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Nuevo producto:", producto);
-    // Lógica para enviar 'producto' al backend
+    try {
+      await actions.createProduct(producto)
+      alert("Producto creado exitosamente");
+    } catch(error){
+      console.error("Error al crear producto:", error);
+      alert("Error al crear producto");
+    }
   };
 
   const handleBulkChange = (event) => {
@@ -116,7 +127,7 @@ export const NuevoProducto = () => {
     <div className="w-75 p-0 m-3">
       <h1>Nuevo Producto</h1>
       <form onSubmit={handleSubmit}>
-        {/* ... (campos del formulario: sku, coleccion, genero, talle) */}
+        {/* ... (campos del formulario: sku, nombre, coleccion, genero, talle) */}
         <div className="form-group">
           <label htmlFor="sku">SKU</label>
           <input
@@ -125,6 +136,18 @@ export const NuevoProducto = () => {
             id="sku"
             name="sku"
             value={producto.sku}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="sku">Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            id="nombre"
+            name="nombre"
+            value={producto.nombre}
             onChange={handleChange}
             required
           />
@@ -182,7 +205,7 @@ export const NuevoProducto = () => {
               className="form-control"
               value={producto.nuevoTalle}
               onChange={handleSizeChange}
-              placeholder="Añadir talle"
+              placeholder="Añadir talle (puedes agregar varios separados por coma)"
             />
             <button
               type="button"
@@ -217,7 +240,7 @@ export const NuevoProducto = () => {
               className="form-control"
               value={producto.nuevoColor}
               onChange={handleColorChange}
-              placeholder="Añadir color"
+              placeholder="Añadir color (puedes agregar varios separados por coma)"
             />
             <button
               type="button"
@@ -227,6 +250,21 @@ export const NuevoProducto = () => {
               Añadir
             </button>
           </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="precio">Precio</label>
+          <input
+            type="number"
+            className="form-control"
+            id="precio"
+            name="precio"
+            value={producto.precio}
+            onChange={handleChange}
+            placeholder="Ingrese el precio con un decimal. Ej: 254,1"
+            step="0.1" // Permite valores de punto flotante con dos decimales
+            min="0"
+            required
+          />
         </div>
 
         <button type="submit" className="btn btn-success mt-3 mx-auto d-block">
@@ -256,7 +294,7 @@ export const NuevoProducto = () => {
       </button>
 
       <div className="form-group mt-3">
-        <label htmlFor="fileUpload">Subir Archivo JSON</label><br/>
+        <label htmlFor="fileUpload">Subir Archivo JSON</label><br />
         <input
           type="file"
           className="form-control-file w-100"

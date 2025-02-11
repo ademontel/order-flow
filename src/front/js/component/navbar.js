@@ -14,7 +14,6 @@ const Menu = () => {
     { to: "/logout", icon: "fa-solid fa-power-off", text: " Desloguearse" },
   ];
 
-
   return (
     <>
       <ul className="navbar-nav text-center mx-auto mb-2 mb-lg-0">
@@ -27,31 +26,29 @@ const Menu = () => {
           </li>
         ))}
       </ul>
-      <div className="navbar-bottom h-75 d-flex align-items-end">
-      <ul className="navbar-nav mb-2 mb-lg-0">
-        {userItems.map((item, index) => (
-          <li key={index} className="nav-item">
-            <Link to={item.to} className="nav-link">
-              <i className={`${item.icon}`}></i>
-              <span>{item.text}</span>
-            </Link>
-          </li>
-        ))}
+      <div className="navbar-bottom d-flex align-items-end" style={{ position: 'absolute', bottom: '0', width: '100%' }}>
+        <ul className="navbar-nav mb-2 mb-lg-0">
+          {userItems.map((item, index) => (
+            <li key={index} className="nav-item">
+              <Link to={item.to} className="nav-link">
+                <i className={`${item.icon}`}></i>
+                <span>{item.text}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </>
-
   );
 };
 
 export const Navbar = () => {
   return (
-    <div className="sidebar p-2">
+    <div className="sidebar p-2" style={{ position: 'relative', height: '97vh' }}>
       <div className="welcome my-4 text-center">
         Hola, usuario!
       </div>
       <Menu />
-
     </div>
   );
 };

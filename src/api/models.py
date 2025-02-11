@@ -56,9 +56,10 @@ class Client(db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sku = db.Column(db.String(50), unique=True, nullable=False)
+    nombre = db.Column(db.String(120), nullable=False)
     coleccion = db.Column(db.String(100))
     genero = db.Column(db.String(50))
-    talle = db.Column(db.String(50))
+    talles = db.Column(db.ARRAY(db.String))
     colores = db.Column(db.ARRAY(db.String))
     precio = db.Column(db.Float, nullable=False)
     remito_items = db.relationship('RemitoItem', backref='product', lazy=True)
@@ -70,9 +71,10 @@ class Product(db.Model):
         return {
             "id": self.id,
             "sku": self.sku,
+            "nombre": self.nombre,
             "coleccion": self.coleccion,
             "genero": self.genero,
-            "talle": self.talle,
+            "talles": self.talles,
             "colores": self.colores,
             "precio": self.precio
         }
