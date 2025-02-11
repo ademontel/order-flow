@@ -26,8 +26,8 @@ const Menu = () => {
           </li>
         ))}
       </ul>
-      <div className="navbar-bottom d-flex align-items-end" style={{ position: 'absolute', bottom: '0', width: '100%' }}>
-        <ul className="navbar-nav mb-2 mb-lg-0">
+      <div className="navbar-bottom d-flex align-items-end" style={{ position: 'absolute', bottom: '0' }}>
+        <ul className="navbar-nav text-center mx-auto mb-2 mb-lg-0">
           {userItems.map((item, index) => (
             <li key={index} className="nav-item">
               <Link to={item.to} className="nav-link">

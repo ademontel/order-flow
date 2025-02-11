@@ -1,89 +1,96 @@
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
 
-body, .raleway {
+body,
+.raleway {
   font-family: "Raleway", serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
 
 .footer {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
   height: 3vh;
 }
 
-@media
-(min-width: 1919px) {
+@media (min-width: 1919px) {
   .navbar-nav {
-    text-align:  start !important;
+    text-align: start !important;
   }
-  .sidebar{
+
+  .sidebar {
     width: 15% !important;
   }
+
   .navbar-nav li a span {
     font-size: 1em;
   }
 }
 
-@media
-(min-width: 1367px) {
+@media (min-width: 1367px) {
   .navbar-nav {
-    text-align:  start !important;
+    text-align: start !important;
   }
-  .sidebar{
+
+  .sidebar {
     width: 15% !important;
   }
+
   .navbar-nav li a span {
     font-size: 1em;
   }
 }
 
-@media
-(max-width: 1367px) {
+@media (max-width: 1367px) {
   .navbar-nav {
-    text-align:  start !important;
+    text-align: start !important;
   }
+
   .navbar-nav li a span {
     font-size: 1em;
   }
 }
 
-@media
-(max-width: 1024px) {
+@media (max-width: 1024px) {
   .navbar-nav {
-    text-align:  start !important;
+    text-align: start !important;
   }
+
   .navbar-nav li a span {
     font-size: 0.9em;
   }
 }
 
-@media
-(max-width: 768px) {
+@media (max-width: 768px) {
   .navbar-nav {
-    text-align:  start !important;
+    text-align: start !important;
   }
+
   .navbar-nav li a span {
     font-size: 0.7em;
   }
 }
 
-@media
-(max-width: 576px) {
+@media (max-width: 576px) {
   .navbar-nav li a span {
     display: none;
   }
+
   .welcome {
     display: none;
   }
-  .sidebar{
+
+  .sidebar {
     width: 10% !important;
   }
+
   .navbar-nav {
-    text-align:  center !important;
+    text-align: center !important;
   }
+
   .navbar-bottom {
     justify-content: center !important;
   }
@@ -91,5 +98,5 @@ body, .raleway {
 
 .sidebar {
   width: 20%;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }

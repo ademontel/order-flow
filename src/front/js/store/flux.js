@@ -72,15 +72,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             getClients: async () => {
                 try {
-                    const response = await fetch(process.env.BACKEND_URL + "api/clients");
-                    if (!response.ok) {
-                        throw new Error("Error fetching clients");
-                    }
+                    const response = await fetch(process.env.BACKEND_URL + "/api/clients");
+                    if (!response.ok) throw new Error("Error fetching clients");
                     const clients = await response.json();
-                    setStore({ clients: clients });
+                    setStore({ clients });
                 } catch (error) {
                     console.error("Error fetching clients:", error);
-                    setStore({ error: error.message });
                 }
             },
 
@@ -102,25 +99,34 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ error: null });
             },
 
-            deleteClient: async (clientId) => {
-                setStore({ error: null });
+            deleteClient: async (client_id) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}api/clients/${clientId}`, {
-                        method: 'DELETE',
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/clients/${client_id}`, {
+                        method: "DELETE",
                     });
+                    if (!response.ok) throw new Error("Error deleting client");
+                    const result = await response.json();
+                    getActions().getClients(); // Actualiza la lista de clientes después de eliminar
+                    return { success: true, message: "Cliente eliminado correctamente." };
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al eliminar cliente');
-                    }
-
-                    setStore({
-                        clients: getStore().clients.filter(client => client.id !== clientId),
-                    });
                 } catch (error) {
                     console.error("Error deleting client:", error);
-                    setStore({ error: error.message });
-                    throw error;
+                    return { success: false, message: "Error al eliminar el cliente." };
+                }
+            },
+
+            deleteProduct: async (product_id) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/products/${product_id}`, {
+                        method: "DELETE",
+                    })
+                    if (!response.ok) throw new Error("Error deleting client");
+                    const result = await response.json();
+                    getActions().getProducts();
+                    return { success: true, message: "Producto eliminado correctamente." };
+                } catch (error) {
+                    console.error("Error deleting product:", error);
+                    return { success: false, message: "Error al eliminar el producto." };
                 }
             },
             getProducts: async () => {

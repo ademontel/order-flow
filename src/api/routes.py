@@ -83,6 +83,19 @@ def get_product(product_id):
         return jsonify(product.serialize()), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@api.route('/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    try:
+        product = Product.query.get(product_id)
+        if not product:
+            return jsonify({"msg": "No existe el producto"}), 404
+        db.session.delete(product)
+        db.session.commit()
+        return jsonify({"msg":"Producto eliminado exitosamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": str(e)}), 500
             
 @api.route('/users', methods=['POST'])
 def register_user():
